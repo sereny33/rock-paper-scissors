@@ -2,8 +2,9 @@
 const rock = "rock";
 const paper = "paper";
 const scissors = "scissors";
-let playerChoice;
+
 let compChoice = getComputerChoice();
+let playerChoice = getPlayerChoice();
 
 // generate random choice
 function getComputerChoice() {
@@ -23,4 +24,21 @@ function getComputerChoice() {
     }    
 }
 
+// aks player for their choice (case insensitive)
+function getPlayerChoice() {
+    playerInput = prompt('Choose: Rock, Paper or Scissors?', '');
+    return playerInput.toLowerCase()
+}
 
+// choice comparison && main logic of the game
+function playGame () {
+    if ((playerChoice === rock && compChoice === scissors)||
+        (playerChoice === scissors && compChoice === paper)||
+        (playerChoice === paper && compChoice === rock)) {
+            return alert(`YOU WIN! ${playerChoice} beats ${compChoice}!`);
+        } else if (playerChoice === compChoice) {
+            return alert('TIE!');
+        } else {
+            return alert(`YOU LOSE! ${compChoice} beats ${playerChoice}!`)
+        }
+}
