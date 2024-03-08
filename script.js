@@ -1,4 +1,4 @@
-// const main variables
+// main variables
 const rock = "rock";
 const paper = "paper";
 const scissors = "scissors";
@@ -7,9 +7,32 @@ const scissors = "scissors";
 let playerScore = 0;
 let compScore = 0;
 
-const playerScorePara = document.querySelector('#playerScore');
-const compScorePara = document.querySelector('#compScore');
-const winnerPara = document.querySelector('#winner');
+// choice variables
+let playerChoice;
+let compChoice;
+
+// score and winner selectors
+const playerScoreText = document.querySelector('#playerScore');
+const compScoreText = document.querySelector('#compScore');
+const winner = document.querySelector('#winner');
+
+// button selectors
+const rockBtn = document.querySelector('#rock');
+const paperBtn = document.querySelector('#paper');
+const scissorsBtn = document.querySelector('#scissors');
+const choiceBtn = document.querySelectorAll('.choice');
+
+// converting nodeList choiceBtn into an array
+// [].forEach.call(choiceBtn, function(el) {} also works
+Array.from(choiceBtn, function(el) {
+el.addEventListener('click', (e) => { // add an event listener to each button
+        if (e.target === rockBtn) playerChoice = rock;
+        if (e.target === scissorsBtn) playerChoice = scissors;
+        if (e.target === paperBtn) playerChoice = paper;
+        compChoice = getComputerChoice();
+        playGame();
+    });
+});
 
 // generate random choice
 function getComputerChoice() {
@@ -29,38 +52,22 @@ function getComputerChoice() {
     }    
 }
 
-// aks player for their choice (case insensitive)
-function getPlayerChoice() {
-    playerInput = prompt('Choose: Rock, Paper or Scissors?', '');
-    return playerInput.toLowerCase()
+// main game logic and score count
+function playGame () {
+    if ((playerChoice === rock && compChoice === scissors)||
+        (playerChoice === scissors && compChoice === paper)||
+        (playerChoice === paper && compChoice === rock)) {
+            winner.textContent = '';
+            winner.textContent = `Winner: YOU WIN! ${playerChoice} beats ${compChoice}!`;
+            playerScore+=1;
+            playerScoreText.textContent = `Your score is: ${playerScore}`;
+        } else if (playerChoice === compChoice) {
+            winner.textContent = '';
+            winner.textContent ='TIE!';
+        } else {
+            winner.textContent = ''
+            winner.textContent = `Winner: YOU LOSE! ${compChoice} beats ${playerChoice}!`;
+            compScore+=1;
+            compScoreText.textContent = `Computer score is: ${compScore}`;
+        }
 }
-
-for (let round=0; round < 5; round++) {
-    let playerChoice = getPlayerChoice();
-    let compChoice = getComputerChoice();
-    if (playerChoice == compChoice) {
-        console.log('Tie');
-    } else if ((playerChoice == rock && compChoice == scissors) ||
-              (playerChoice == paper && compChoice == rock) ||
-              (playerChoice == scissors && compChoice == paper)) {
-        console.log('You win', playerScore+=1);
-        playerScorePara.textContent = `Your score: ${playerScore}`;
-                
-    } else {
-        console.log('You lose!', compScore+=1);
-        compScorePara.textContent = `Computer score: ${compScore}`;
-    }
-}
-
-function whoWon() {
-    
-    (playerScore>compScore) ? winner = 'You are CHAMPION':
-    (playerScore<compScore) ? winner = 'You are LOSER':
-    winner = 'TIE';
-    return winnerPara.textContent = `${winner}`;
-}
-console.log(whoWon());
-
-// five round game
-
-
